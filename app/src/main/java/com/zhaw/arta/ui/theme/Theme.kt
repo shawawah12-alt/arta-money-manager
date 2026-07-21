@@ -9,31 +9,16 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 enum class ThemeMode { System, Light, Dark }
-
-private val DarkScheme = darkColorScheme(
-    primary = ChampagneGold,
-    onPrimary = DarkTokens.heroText,
-    secondary = EmeraldIn,
-    background = DarkTokens.canvas,
-    onBackground = DarkTokens.textPrimary,
-    surface = DarkTokens.card,
-    onSurface = DarkTokens.textPrimary,
-    surfaceVariant = DarkTokens.shimmerBase,
-    onSurfaceVariant = DarkTokens.textSecondary,
-    outline = DarkTokens.cardBorder,
-    error = RoseOut,
-)
 
 private val LightScheme = lightColorScheme(
     primary = LightTokens.accent,
     onPrimary = LightTokens.card,
-    secondary = LightTokens.positive,
     background = LightTokens.canvas,
     onBackground = LightTokens.textPrimary,
     surface = LightTokens.card,
@@ -44,23 +29,38 @@ private val LightScheme = lightColorScheme(
     error = LightTokens.negative,
 )
 
+private val DarkScheme = darkColorScheme(
+    primary = DarkTokens.accent,
+    onPrimary = DarkTokens.canvas,
+    background = DarkTokens.canvas,
+    onBackground = DarkTokens.textPrimary,
+    surface = DarkTokens.card,
+    onSurface = DarkTokens.textPrimary,
+    surfaceVariant = DarkTokens.shimmerBase,
+    onSurfaceVariant = DarkTokens.textSecondary,
+    outline = DarkTokens.cardBorder,
+    error = DarkTokens.negative,
+)
+
+// Typography v2 — hierarchy lewat ukuran & weight, BUKAN lewat caps/tracking.
+// Angka besar pakai weight berat + tracking rapat (kaya Copilot Money).
 private val ArtaTypography = Typography(
-    displaySmall = TextStyle(fontWeight = FontWeight.Black, fontSize = 34.sp, letterSpacing = (-0.5).sp),
-    headlineMedium = TextStyle(fontWeight = FontWeight.Bold, fontSize = 26.sp, letterSpacing = (-0.25).sp),
-    titleLarge = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp),
-    titleMedium = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 16.sp),
+    displaySmall = TextStyle(fontWeight = FontWeight.Bold, fontSize = 40.sp, letterSpacing = (-1.2).sp),
+    headlineMedium = TextStyle(fontWeight = FontWeight.Bold, fontSize = 24.sp, letterSpacing = (-0.5).sp),
+    titleLarge = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 19.sp, letterSpacing = (-0.3).sp),
+    titleMedium = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 15.sp, letterSpacing = 0.sp),
     bodyLarge = TextStyle(fontWeight = FontWeight.Normal, fontSize = 16.sp),
     bodyMedium = TextStyle(fontWeight = FontWeight.Normal, fontSize = 14.sp),
-    labelLarge = TextStyle(fontWeight = FontWeight.SemiBold, fontSize = 14.sp, letterSpacing = 0.3.sp),
-    labelMedium = TextStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp, letterSpacing = 0.4.sp),
+    labelLarge = TextStyle(fontWeight = FontWeight.Medium, fontSize = 14.sp, letterSpacing = 0.sp),
+    labelMedium = TextStyle(fontWeight = FontWeight.Medium, fontSize = 12.sp, letterSpacing = 0.sp),
 )
 
 private val ArtaShapes = Shapes(
     extraSmall = RoundedCornerShape(6.dp),
-    small = RoundedCornerShape(10.dp),
-    medium = RoundedCornerShape(16.dp),
-    large = RoundedCornerShape(22.dp),
-    extraLarge = RoundedCornerShape(28.dp),
+    small = RoundedCornerShape(8.dp),
+    medium = RoundedCornerShape(12.dp),
+    large = RoundedCornerShape(16.dp),
+    extraLarge = RoundedCornerShape(20.dp),
 )
 
 @Composable

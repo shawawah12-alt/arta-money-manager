@@ -1,6 +1,7 @@
 package com.zhaw.arta.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,33 +18,34 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ArrowDownward
-import androidx.compose.material.icons.rounded.ArrowUpward
+import androidx.compose.material.icons.rounded.BrightnessAuto
 import androidx.compose.material.icons.rounded.DarkMode
 import androidx.compose.material.icons.rounded.LightMode
-import androidx.compose.material.icons.rounded.BrightnessAuto
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.zhaw.arta.data.formatRupiah
 import com.zhaw.arta.ui.components.AnimatedRupiah
 import com.zhaw.arta.ui.components.CategoryDonut
 import com.zhaw.arta.ui.components.WeeklyBars
 import com.zhaw.arta.ui.components.entrance
-import com.zhaw.arta.ui.components.glassCard
-import com.zhaw.arta.ui.components.popIn
 import com.zhaw.arta.ui.components.pressable
 import com.zhaw.arta.ui.theme.Arta
 import com.zhaw.arta.ui.theme.ThemeMode
-import com.zhaw.arta.ui.theme.heroBrush
 import com.zhaw.arta.viewmodel.LedgerUiState
+
+// ============================================================
+// Dashboard v2 — "quiet money"
+// Saldo = hero typography langsung di canvas (kaya Copilot Money),
+// bukan kartu gradient. Section = card putih flat dengan border
+// hairline 1dp. Satu aksen warna, dipakai hemat.
+// ============================================================
 
 @Composable
 fun DashboardScreen(
@@ -57,32 +59,28 @@ fun DashboardScreen(
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = contentPadding,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
+        // Header: wordmark kecil + theme toggle ikon doang (nggak teriak-teriak)
         item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
+                    .padding(horizontal = 24.dp)
                     .entrance(0),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Column(modifier = Modifier.weight(1f)) {
-                    Text("Arta", style = MaterialTheme.typography.displaySmall, color = t.accent)
-                    Text(
-                        "Kelola uangmu dengan tenang",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = t.textSecondary,
-                    )
-                }
-                // Theme switcher pill — System / Light / Dark
-                Row(
+                Text(
+                    "Arta",
+                    style = MaterialTheme.typography.titleLarge,
+                    color = t.textPrimary,
+                    modifier = Modifier.weight(1f),
+                )
+                Box(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .background(t.accentSoft)
                         .pressable(onCycleTheme)
-                        .padding(horizontal = 14.dp, vertical = 9.dp),
-                    verticalAlignment = Alignment.CenterVertically,
+                        .padding(8.dp),
                 ) {
                     Icon(
                         imageVector = when (themeMode) {
@@ -91,53 +89,74 @@ fun DashboardScreen(
                             ThemeMode.Dark -> Icons.Rounded.DarkMode
                         },
                         contentDescription = "Ganti tema",
-                        tint = t.accent,
-                        modifier = Modifier.size(17.dp).popIn(),
-                    )
-                    Spacer(Modifier.width(6.dp))
-                    Text(
-                        text = when (themeMode) {
-                            ThemeMode.System -> "Auto"
-                            ThemeMode.Light -> "Terang"
-                            ThemeMode.Dark -> "Gelap"
-                        },
-                        style = MaterialTheme.typography.labelLarge,
-                        color = t.accent,
+                        tint = t.textSecondary,
+                        modifier = Modifier.size(20.dp),
                     )
                 }
             }
         }
 
-        item { Box(Modifier.entrance(1)) { BalanceCard(state) } }
+        // Hero: saldo langsung di canvas — typography yang kerja
+        item {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(top = 8.dp, bottom = 4.dp)
+                    .entrance(1),
+            ) {
+                Text(
+                    text = "Total saldo",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = t.textSecondary,
+                )
+                Spacer(Modifier.height(2.dp))
+                AnimatedRupiah(
+                    target = state.balance,
+                    format = { formatRupiah(it) },
+                    style = MaterialTheme.typography.displaySmall,
+                    color = t.textPrimary,
+                )
+                Spacer(Modifier.height(14.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    InlineStat(label = "Masuk bulan ini", value = formatRupiah(state.monthIncome), color = t.positive)
+                    Spacer(Modifier.width(24.dp))
+                    InlineStat(label = "Keluar bulan ini", value = formatRupiah(state.monthExpense), color = t.negative)
+                }
+            }
+        }
+
+        item { Spacer(Modifier.height(4.dp)) }
 
         item {
-            SectionCard(title = "Pengeluaran per Kategori", entranceIndex = 2) {
+            FlatSection(title = "Pengeluaran per kategori", entranceIndex = 2) {
                 if (state.byCategory.isEmpty()) {
-                    EmptyHint("Belum ada pengeluaran bulan ini.\nTekan + untuk mencatat transaksi pertamamu.")
+                    EmptyHint("Belum ada pengeluaran bulan ini.")
                 } else {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CategoryDonut(
                             data = state.byCategory,
-                            modifier = Modifier.size(150.dp),
+                            modifier = Modifier.size(132.dp),
                         )
-                        Spacer(Modifier.width(18.dp))
-                        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Spacer(Modifier.width(20.dp))
+                        Column {
                             val total = state.byCategory.sumOf { it.second }.coerceAtLeast(1)
                             state.byCategory.take(5).forEachIndexed { i, (cat, amount) ->
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.entrance(i + 3, baseDelay = 60),
-                                ) {
-                                    Box(Modifier.size(10.dp).clip(CircleShape).background(cat.color))
+                                if (i > 0) HorizontalDivider(color = t.divider, modifier = Modifier.padding(vertical = 7.dp))
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(Modifier.size(8.dp).clip(CircleShape).background(cat.color))
                                     Spacer(Modifier.width(8.dp))
-                                    Column {
-                                        Text(cat.label, style = MaterialTheme.typography.labelMedium, color = t.textPrimary)
-                                        Text(
-                                            "${amount * 100 / total}% \u00B7 ${formatRupiah(amount)}",
-                                            style = MaterialTheme.typography.labelMedium,
-                                            color = t.textSecondary,
-                                        )
-                                    }
+                                    Text(
+                                        cat.label,
+                                        style = MaterialTheme.typography.labelLarge,
+                                        color = t.textPrimary,
+                                        modifier = Modifier.weight(1f),
+                                    )
+                                    Text(
+                                        "${amount * 100 / total}%",
+                                        style = MaterialTheme.typography.labelMedium,
+                                        color = t.textSecondary,
+                                    )
                                 }
                             }
                         }
@@ -147,7 +166,7 @@ fun DashboardScreen(
         }
 
         item {
-            SectionCard(title = "Arus Kas 7 Hari", entranceIndex = 3) {
+            FlatSection(title = "Arus kas 7 hari", entranceIndex = 3) {
                 if (state.transactions.isEmpty()) {
                     EmptyHint("Grafik mingguan akan muncul di sini.")
                 } else {
@@ -155,104 +174,31 @@ fun DashboardScreen(
                 }
             }
         }
-
-        item {
-            SectionCard(title = "Rasio Bulan Ini", entranceIndex = 4) {
-                val total = (state.monthIncome + state.monthExpense).coerceAtLeast(1)
-                val frac = state.monthExpense.toFloat() / total
-                Column {
-                    LinearProgressIndicator(
-                        progress = { frac },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(10.dp)
-                            .clip(RoundedCornerShape(5.dp)),
-                        color = t.negative,
-                        trackColor = t.positive.copy(alpha = 0.35f),
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    Text(
-                        text = if (state.monthIncome == 0L && state.monthExpense == 0L)
-                            "Belum ada aktivitas bulan ini."
-                        else
-                            "Pengeluaran ${state.monthExpense * 100 / total}% dari total arus kas bulan ini.",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = t.textSecondary,
-                    )
-                }
-            }
-        }
     }
 }
 
 @Composable
-private fun BalanceCard(state: LedgerUiState) {
+private fun InlineStat(label: String, value: String, color: androidx.compose.ui.graphics.Color) {
+    val t = Arta.tokens
+    Column {
+        Text(label, style = MaterialTheme.typography.labelMedium, color = t.textFaint)
+        Spacer(Modifier.height(1.dp))
+        Text(value, style = MaterialTheme.typography.titleMedium, color = color)
+    }
+}
+
+/** Section flat: card polos + border hairline 1dp. Tanpa glass, tanpa gradient. */
+@Composable
+fun FlatSection(title: String, entranceIndex: Int = 0, content: @Composable () -> Unit) {
     val t = Arta.tokens
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp)
-            .clip(RoundedCornerShape(24.dp))
-            .background(heroBrush(t))
-            .padding(24.dp),
-    ) {
-        Text(
-            text = "TOTAL SALDO",
-            style = MaterialTheme.typography.labelMedium,
-            color = t.heroText.copy(alpha = 0.65f),
-        )
-        Spacer(Modifier.height(4.dp))
-        AnimatedRupiah(
-            target = state.balance,
-            format = { formatRupiah(it) },
-            style = MaterialTheme.typography.displaySmall,
-            color = t.heroText,
-        )
-        Spacer(Modifier.height(18.dp))
-        Row {
-            FlowPill(
-                icon = { Icon(Icons.Rounded.ArrowDownward, null, tint = t.positive, modifier = Modifier.size(16.dp)) },
-                label = "Masuk",
-                value = formatRupiah(state.monthIncome),
-            )
-            Spacer(Modifier.width(12.dp))
-            FlowPill(
-                icon = { Icon(Icons.Rounded.ArrowUpward, null, tint = t.negative, modifier = Modifier.size(16.dp)) },
-                label = "Keluar",
-                value = formatRupiah(state.monthExpense),
-            )
-        }
-    }
-}
-
-@Composable
-private fun FlowPill(icon: @Composable () -> Unit, label: String, value: String) {
-    val t = Arta.tokens
-    Row(
-        modifier = Modifier
-            .clip(RoundedCornerShape(14.dp))
-            .background(t.pillOnHero)
-            .padding(horizontal = 12.dp, vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        icon()
-        Spacer(Modifier.width(6.dp))
-        Column {
-            Text(label, style = MaterialTheme.typography.labelMedium, color = t.heroText.copy(alpha = 0.65f))
-            Text(value, style = MaterialTheme.typography.labelLarge, color = t.heroText, fontWeight = FontWeight.Bold)
-        }
-    }
-}
-
-@Composable
-fun SectionCard(title: String, entranceIndex: Int = 0, content: @Composable () -> Unit) {
-    val t = Arta.tokens
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 20.dp)
+            .padding(horizontal = 16.dp)
             .entrance(entranceIndex)
-            .glassCard(t)
+            .clip(RoundedCornerShape(16.dp))
+            .background(t.card)
+            .border(1.dp, t.cardBorder, RoundedCornerShape(16.dp))
             .padding(20.dp),
     ) {
         Text(title, style = MaterialTheme.typography.titleMedium, color = t.textPrimary)
@@ -267,13 +213,13 @@ fun EmptyHint(text: String) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 18.dp),
+            .padding(vertical = 16.dp),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.bodyMedium,
-            color = t.textSecondary,
+            color = t.textFaint,
             textAlign = androidx.compose.ui.text.style.TextAlign.Center,
         )
     }

@@ -14,13 +14,6 @@ import androidx.compose.material.icons.rounded.Payments
 import androidx.compose.material.icons.rounded.TrendingUp
 import androidx.compose.material.icons.rounded.CardGiftcard
 import androidx.compose.material.icons.rounded.MoreHoriz
-import com.zhaw.arta.ui.theme.Amethyst
-import com.zhaw.arta.ui.theme.Azure
-import com.zhaw.arta.ui.theme.ChampagneGold
-import com.zhaw.arta.ui.theme.Coral
-import com.zhaw.arta.ui.theme.EmeraldIn
-import com.zhaw.arta.ui.theme.RoseOut
-import com.zhaw.arta.ui.theme.Teal
 import kotlinx.serialization.Serializable
 import java.text.NumberFormat
 import java.util.Locale
@@ -33,18 +26,19 @@ enum class Category(
     val icon: ImageVector,
     val type: TxType,
 ) {
-    Makanan("Makanan", Coral, Icons.Rounded.Fastfood, TxType.Expense),
-    Transportasi("Transportasi", Azure, Icons.Rounded.DirectionsBus, TxType.Expense),
-    Belanja("Belanja", Amethyst, Icons.Rounded.ShoppingBag, TxType.Expense),
-    Tagihan("Tagihan", Teal, Icons.Rounded.Bolt, TxType.Expense),
-    Hiburan("Hiburan", RoseOut, Icons.Rounded.Movie, TxType.Expense),
-    Kesehatan("Kesehatan", EmeraldIn, Icons.Rounded.MedicalServices, TxType.Expense),
-    Pendidikan("Pendidikan", ChampagneGold, Icons.Rounded.School, TxType.Expense),
-    LainnyaKeluar("Lainnya", Color(0xFF8A93A6), Icons.Rounded.MoreHoriz, TxType.Expense),
-    Gaji("Gaji", EmeraldIn, Icons.Rounded.Payments, TxType.Income),
-    Investasi("Investasi", ChampagneGold, Icons.Rounded.TrendingUp, TxType.Income),
-    Hadiah("Hadiah", Amethyst, Icons.Rounded.CardGiftcard, TxType.Income),
-    LainnyaMasuk("Lainnya", Azure, Icons.Rounded.MoreHoriz, TxType.Income);
+    // Palet kategori v2 — muted/desaturated, satu keluarga tonal (bukan pelangi neon).
+    Makanan("Makanan", Color(0xFFC77D4F), Icons.Rounded.Fastfood, TxType.Expense),
+    Transportasi("Transportasi", Color(0xFF5E7FA3), Icons.Rounded.DirectionsBus, TxType.Expense),
+    Belanja("Belanja", Color(0xFF8B6FA8), Icons.Rounded.ShoppingBag, TxType.Expense),
+    Tagihan("Tagihan", Color(0xFF5A9490), Icons.Rounded.Bolt, TxType.Expense),
+    Hiburan("Hiburan", Color(0xFFB5686C), Icons.Rounded.Movie, TxType.Expense),
+    Kesehatan("Kesehatan", Color(0xFF6D9B7B), Icons.Rounded.MedicalServices, TxType.Expense),
+    Pendidikan("Pendidikan", Color(0xFFA98F55), Icons.Rounded.School, TxType.Expense),
+    LainnyaKeluar("Lainnya", Color(0xFF8A8D95), Icons.Rounded.MoreHoriz, TxType.Expense),
+    Gaji("Gaji", Color(0xFF4E8C6F), Icons.Rounded.Payments, TxType.Income),
+    Investasi("Investasi", Color(0xFFA98F55), Icons.Rounded.TrendingUp, TxType.Income),
+    Hadiah("Hadiah", Color(0xFF8B6FA8), Icons.Rounded.CardGiftcard, TxType.Income),
+    LainnyaMasuk("Lainnya", Color(0xFF5E7FA3), Icons.Rounded.MoreHoriz, TxType.Income);
 
     companion object {
         fun of(type: TxType) = entries.filter { it.type == type }
