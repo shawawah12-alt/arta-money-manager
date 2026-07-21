@@ -1,4 +1,4 @@
-package com.agon.app.ui.components
+package com.zhaw.arta.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -27,13 +27,13 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.agon.app.data.Category
-import com.agon.app.data.formatRupiah
-import com.agon.app.viewmodel.DaySpend
-import com.agon.app.ui.theme.EmeraldIn
-import com.agon.app.ui.theme.Mist
-import com.agon.app.ui.theme.RoseOut
-import com.agon.app.ui.theme.SlateHigh
+import com.zhaw.arta.data.Category
+import com.zhaw.arta.data.formatRupiah
+import com.zhaw.arta.viewmodel.DaySpend
+import com.zhaw.arta.ui.theme.EmeraldIn
+import com.zhaw.arta.ui.theme.Mist
+import com.zhaw.arta.ui.theme.RoseOut
+import com.zhaw.arta.ui.theme.SlateHigh
 import kotlin.math.max
 
 /** Donut chart pengeluaran per kategori dengan animasi sweep. */

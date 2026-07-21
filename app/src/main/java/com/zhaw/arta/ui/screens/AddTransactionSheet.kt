@@ -1,4 +1,4 @@
-package com.agon.app.ui.screens
+package com.zhaw.arta.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -42,13 +42,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import com.agon.app.data.Category
-import com.agon.app.data.TxType
-import com.agon.app.ui.theme.ChampagneGold
-import com.agon.app.ui.theme.Charcoal
-import com.agon.app.ui.theme.Mist
-import com.agon.app.ui.theme.Obsidian
-import com.agon.app.ui.theme.SlateHigh
+import com.zhaw.arta.data.Category
+import com.zhaw.arta.data.TxType
+import com.zhaw.arta.ui.theme.ChampagneGold
+import com.zhaw.arta.ui.theme.Charcoal
+import com.zhaw.arta.ui.theme.Mist
+import com.zhaw.arta.ui.theme.Obsidian
+import com.zhaw.arta.ui.theme.SlateHigh
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

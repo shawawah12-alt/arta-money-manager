@@ -1,4 +1,4 @@
-package com.agon.app.ui.theme
+package com.zhaw.arta.ui.theme
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Typography

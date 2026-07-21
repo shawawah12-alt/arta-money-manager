@@ -1,4 +1,4 @@
-package com.agon.app.ui.screens
+package com.zhaw.arta.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -35,15 +35,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import com.agon.app.data.Transaction
-import com.agon.app.data.TxType
-import com.agon.app.data.formatRupiahSigned
-import com.agon.app.ui.theme.ChampagneGold
-import com.agon.app.ui.theme.Charcoal
-import com.agon.app.ui.theme.EmeraldIn
-import com.agon.app.ui.theme.Mist
-import com.agon.app.ui.theme.Obsidian
-import com.agon.app.ui.theme.RoseOut
+import com.zhaw.arta.data.Transaction
+import com.zhaw.arta.data.TxType
+import com.zhaw.arta.data.formatRupiahSigned
+import com.zhaw.arta.ui.theme.ChampagneGold
+import com.zhaw.arta.ui.theme.Charcoal
+import com.zhaw.arta.ui.theme.EmeraldIn
+import com.zhaw.arta.ui.theme.Mist
+import com.zhaw.arta.ui.theme.Obsidian
+import com.zhaw.arta.ui.theme.RoseOut
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale

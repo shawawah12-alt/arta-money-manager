@@ -1,12 +1,12 @@
-package com.agon.app.viewmodel
+package com.zhaw.arta.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.agon.app.data.Category
-import com.agon.app.data.Transaction
-import com.agon.app.data.TransactionStore
-import com.agon.app.data.TxType
+import com.zhaw.arta.data.Category
+import com.zhaw.arta.data.Transaction
+import com.zhaw.arta.data.TransactionStore
+import com.zhaw.arta.data.TxType
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

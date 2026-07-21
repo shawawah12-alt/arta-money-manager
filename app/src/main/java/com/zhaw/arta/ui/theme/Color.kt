@@ -1,4 +1,4 @@
-package com.agon.app.ui.theme
+package com.zhaw.arta.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

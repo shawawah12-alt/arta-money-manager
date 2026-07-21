@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    namespace = "com.agon.app"
+    namespace = "com.zhaw.arta"
     compileSdk = 36
     buildToolsVersion = "36.0.0"
 
     defaultConfig {
-        applicationId = "com.agon.app"
+        applicationId = "com.zhaw.arta"
         minSdk = 24
         targetSdk = 36
         versionCode = 1

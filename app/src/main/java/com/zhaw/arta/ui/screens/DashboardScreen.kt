@@ -1,4 +1,4 @@
-package com.agon.app.ui.screens
+package com.zhaw.arta.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,17 +33,17 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.agon.app.data.formatRupiah
-import com.agon.app.ui.components.CategoryDonut
-import com.agon.app.ui.components.WeeklyBars
-import com.agon.app.ui.theme.ChampagneGold
-import com.agon.app.ui.theme.Charcoal
-import com.agon.app.ui.theme.EmeraldIn
-import com.agon.app.ui.theme.GoldSoft
-import com.agon.app.ui.theme.Mist
-import com.agon.app.ui.theme.Obsidian
-import com.agon.app.ui.theme.RoseOut
-import com.agon.app.viewmodel.LedgerUiState
+import com.zhaw.arta.data.formatRupiah
+import com.zhaw.arta.ui.components.CategoryDonut
+import com.zhaw.arta.ui.components.WeeklyBars
+import com.zhaw.arta.ui.theme.ChampagneGold
+import com.zhaw.arta.ui.theme.Charcoal
+import com.zhaw.arta.ui.theme.EmeraldIn
+import com.zhaw.arta.ui.theme.GoldSoft
+import com.zhaw.arta.ui.theme.Mist
+import com.zhaw.arta.ui.theme.Obsidian
+import com.zhaw.arta.ui.theme.RoseOut
+import com.zhaw.arta.viewmodel.LedgerUiState
 
 @Composable
 fun DashboardScreen(state: LedgerUiState, contentPadding: androidx.compose.foundation.layout.PaddingValues) {

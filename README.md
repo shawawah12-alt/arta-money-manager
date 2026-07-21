@@ -36,7 +36,7 @@ Requirement: JDK 17, Android SDK 36.
 ## 📁 Struktur
 
 ```
-app/src/main/java/com/agon/app/
+app/src/main/java/com/zhaw/arta/
 ├── MainActivity.kt              # Scaffold, bottom nav, FAB, snackbar
 ├── data/
 │   ├── Models.kt                # Transaction, Category (12 kategori), formatter Rupiah

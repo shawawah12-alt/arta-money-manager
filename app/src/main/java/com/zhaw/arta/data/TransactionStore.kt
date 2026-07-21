@@ -1,4 +1,4 @@
-package com.agon.app.data
+package com.zhaw.arta.data
 
 import android.content.Context
 import androidx.datastore.preferences.core.edit

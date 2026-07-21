@@ -1,4 +1,4 @@
-package com.agon.app.data
+package com.zhaw.arta.data
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -14,14 +14,14 @@ import androidx.compose.material.icons.rounded.Payments
 import androidx.compose.material.icons.rounded.TrendingUp
 import androidx.compose.material.icons.rounded.CardGiftcard
 import androidx.compose.material.icons.rounded.MoreHoriz
-import com.agon.app.ui.theme.Amethyst
-import com.agon.app.ui.theme.Azure
-import com.agon.app.ui.theme.ChampagneGold
-import com.agon.app.ui.theme.Coral
-import com.agon.app.ui.theme.EmeraldIn
-import com.agon.app.ui.theme.Mist
-import com.agon.app.ui.theme.RoseOut
-import com.agon.app.ui.theme.Teal
+import com.zhaw.arta.ui.theme.Amethyst
+import com.zhaw.arta.ui.theme.Azure
+import com.zhaw.arta.ui.theme.ChampagneGold
+import com.zhaw.arta.ui.theme.Coral
+import com.zhaw.arta.ui.theme.EmeraldIn
+import com.zhaw.arta.ui.theme.Mist
+import com.zhaw.arta.ui.theme.RoseOut
+import com.zhaw.arta.ui.theme.Teal
 import kotlinx.serialization.Serializable
 import java.text.NumberFormat
 import java.util.Locale

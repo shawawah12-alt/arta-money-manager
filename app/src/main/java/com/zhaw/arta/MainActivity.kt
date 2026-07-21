@@ -1,4 +1,4 @@
-package com.agon.app
+package com.zhaw.arta
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -33,16 +33,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.agon.app.data.formatRupiah
-import com.agon.app.ui.screens.AddTransactionSheet
-import com.agon.app.ui.screens.DashboardScreen
-import com.agon.app.ui.screens.HistoryScreen
-import com.agon.app.ui.theme.AgonAppTheme
-import com.agon.app.ui.theme.ChampagneGold
-import com.agon.app.ui.theme.Charcoal
-import com.agon.app.ui.theme.Mist
-import com.agon.app.ui.theme.Obsidian
-import com.agon.app.viewmodel.LedgerViewModel
+import com.zhaw.arta.data.formatRupiah
+import com.zhaw.arta.ui.screens.AddTransactionSheet
+import com.zhaw.arta.ui.screens.DashboardScreen
+import com.zhaw.arta.ui.screens.HistoryScreen
+import com.zhaw.arta.ui.theme.AgonAppTheme
+import com.zhaw.arta.ui.theme.ChampagneGold
+import com.zhaw.arta.ui.theme.Charcoal
+import com.zhaw.arta.ui.theme.Mist
+import com.zhaw.arta.ui.theme.Obsidian
+import com.zhaw.arta.viewmodel.LedgerViewModel
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
