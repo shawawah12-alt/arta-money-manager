@@ -1,9 +1,13 @@
 package com.zhaw.arta.ui.screens
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,15 +21,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material.icons.rounded.DeleteOutline
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,12 +41,10 @@ import androidx.compose.ui.unit.dp
 import com.zhaw.arta.data.Transaction
 import com.zhaw.arta.data.TxType
 import com.zhaw.arta.data.formatRupiahSigned
-import com.zhaw.arta.ui.theme.ChampagneGold
-import com.zhaw.arta.ui.theme.Charcoal
-import com.zhaw.arta.ui.theme.EmeraldIn
-import com.zhaw.arta.ui.theme.Mist
-import com.zhaw.arta.ui.theme.Obsidian
-import com.zhaw.arta.ui.theme.RoseOut
+import com.zhaw.arta.ui.components.entrance
+import com.zhaw.arta.ui.components.glassCard
+import com.zhaw.arta.ui.components.pressable
+import com.zhaw.arta.ui.theme.Arta
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -54,8 +55,9 @@ private enum class Filter(val label: String) { Semua("Semua"), Masuk("Masuk"), K
 fun HistoryScreen(
     transactions: List<Transaction>,
     onDelete: (Long) -> Unit,
-    contentPadding: androidx.compose.foundation.layout.PaddingValues,
+    contentPadding: PaddingValues,
 ) {
+    val t = Arta.tokens
     var filter by remember { mutableStateOf(Filter.Semua) }
 
     val visible = when (filter) {
@@ -68,24 +70,38 @@ fun HistoryScreen(
         Text(
             text = "Riwayat",
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(horizontal = 20.dp),
+            color = t.textPrimary,
+            modifier = Modifier.padding(horizontal = 20.dp).entrance(0),
         )
         Spacer(Modifier.height(12.dp))
+
+        // Segmented pill filter dengan sliding highlight (kaya tab CSS)
         Row(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .clip(CircleShape)
+                .background(t.glass)
+                .background(t.accentSoft.copy(alpha = 0.06f))
+                .padding(4.dp)
+                .entrance(1),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             for (f in Filter.entries) {
-                FilterChip(
-                    selected = filter == f,
-                    onClick = { filter = f },
-                    label = { Text(f.label) },
-                    colors = FilterChipDefaults.filterChipColors(
-                        selectedContainerColor = ChampagneGold,
-                        selectedLabelColor = Obsidian,
-                    ),
-                )
+                val selected = filter == f
+                Box(
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .background(if (selected) t.accent else androidx.compose.ui.graphics.Color.Transparent)
+                        .pressable { filter = f }
+                        .animateContentSize(spring(stiffness = Spring.StiffnessMedium))
+                        .padding(horizontal = 18.dp, vertical = 8.dp),
+                ) {
+                    Text(
+                        text = f.label,
+                        style = MaterialTheme.typography.labelLarge,
+                        color = if (selected) (if (t.isDark) t.heroText else t.card) else t.textSecondary,
+                    )
+                }
             }
         }
         Spacer(Modifier.height(8.dp))
@@ -95,20 +111,18 @@ fun HistoryScreen(
                 Text(
                     text = "Belum ada transaksi.\nTekan + untuk mulai mencatat.",
                     style = MaterialTheme.typography.bodyLarge,
-                    color = Mist,
+                    color = t.textSecondary,
                     textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 )
             }
         } else {
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                contentPadding = androidx.compose.foundation.layout.PaddingValues(
-                    start = 20.dp, end = 20.dp, top = 8.dp, bottom = 120.dp,
-                ),
+                contentPadding = PaddingValues(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 120.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
                 items(visible, key = { it.id }) { tx ->
-                    TransactionRow(tx = tx, onDelete = { onDelete(tx.id) })
+                    SwipeableTransactionRow(tx = tx, onDelete = { onDelete(tx.id) })
                 }
             }
         }
@@ -117,15 +131,46 @@ fun HistoryScreen(
 
 private val dateFmt = SimpleDateFormat("d MMM yyyy \u00B7 HH:mm", Locale.forLanguageTag("id-ID"))
 
+/** Row transaksi dengan swipe-to-delete (geser ke kiri) + latar merah yang muncul di belakang. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TransactionRow(tx: Transaction, onDelete: () -> Unit) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Charcoal),
+fun SwipeableTransactionRow(tx: Transaction, onDelete: () -> Unit) {
+    val t = Arta.tokens
+    val dismissState = rememberSwipeToDismissBoxState(
+        confirmValueChange = { value ->
+            if (value == SwipeToDismissBoxValue.EndToStart) {
+                onDelete()
+                true
+            } else false
+        },
+        positionalThreshold = { it * 0.45f },
+    )
+
+    SwipeToDismissBox(
+        state = dismissState,
+        enableDismissFromStartToEnd = false,
+        backgroundContent = {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(t.negative.copy(alpha = 0.85f))
+                    .padding(horizontal = 20.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    Icons.Rounded.DeleteOutline,
+                    contentDescription = "Hapus",
+                    tint = androidx.compose.ui.graphics.Color.White,
+                )
+            }
+        },
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
+                .glassCard(t, radius = 16.dp)
                 .padding(horizontal = 14.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -148,30 +193,20 @@ fun TransactionRow(tx: Transaction, onDelete: () -> Unit) {
                 Text(
                     text = tx.note.ifBlank { tx.cat.label },
                     style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    color = t.textPrimary,
                     maxLines = 1,
                 )
                 Text(
                     text = "${tx.cat.label} \u00B7 ${dateFmt.format(Date(tx.epochMillis))}",
                     style = MaterialTheme.typography.labelMedium,
-                    color = Mist,
+                    color = t.textSecondary,
                 )
             }
-            Column(horizontalAlignment = Alignment.End) {
-                Text(
-                    text = formatRupiahSigned(tx),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = if (tx.txType == TxType.Income) EmeraldIn else RoseOut,
-                )
-            }
-            IconButton(onClick = onDelete) {
-                Icon(
-                    Icons.Rounded.Delete,
-                    contentDescription = "Hapus",
-                    tint = Mist,
-                    modifier = Modifier.size(20.dp),
-                )
-            }
+            Text(
+                text = formatRupiahSigned(tx),
+                style = MaterialTheme.typography.titleMedium,
+                color = if (tx.txType == TxType.Income) t.positive else t.negative,
+            )
         }
     }
 }

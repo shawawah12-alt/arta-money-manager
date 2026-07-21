@@ -19,7 +19,6 @@ import com.zhaw.arta.ui.theme.Azure
 import com.zhaw.arta.ui.theme.ChampagneGold
 import com.zhaw.arta.ui.theme.Coral
 import com.zhaw.arta.ui.theme.EmeraldIn
-import com.zhaw.arta.ui.theme.Mist
 import com.zhaw.arta.ui.theme.RoseOut
 import com.zhaw.arta.ui.theme.Teal
 import kotlinx.serialization.Serializable
@@ -41,7 +40,7 @@ enum class Category(
     Hiburan("Hiburan", RoseOut, Icons.Rounded.Movie, TxType.Expense),
     Kesehatan("Kesehatan", EmeraldIn, Icons.Rounded.MedicalServices, TxType.Expense),
     Pendidikan("Pendidikan", ChampagneGold, Icons.Rounded.School, TxType.Expense),
-    LainnyaKeluar("Lainnya", Mist, Icons.Rounded.MoreHoriz, TxType.Expense),
+    LainnyaKeluar("Lainnya", Color(0xFF8A93A6), Icons.Rounded.MoreHoriz, TxType.Expense),
     Gaji("Gaji", EmeraldIn, Icons.Rounded.Payments, TxType.Income),
     Investasi("Investasi", ChampagneGold, Icons.Rounded.TrendingUp, TxType.Income),
     Hadiah("Hadiah", Amethyst, Icons.Rounded.CardGiftcard, TxType.Income),
